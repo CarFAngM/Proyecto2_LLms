@@ -1,16 +1,18 @@
 import os
+import time
 from pinecone import Pinecone, ServerlessSpec
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
-
-def init_pinecone():
+def init_pinecone(index_name: str):
     api_key = os.getenv("PINECONE_API_KEY")
+
+    if not api_key or not index_name:
+        raise EnvironmentError("Faltan las variables de entorno PINECONE_API_KEY o INDEX_NAME.")
+
     pc = Pinecone(api_key=api_key)
     index_list = pc.list_indexes().names()
-    index_name = os.getenv("INDEX_NAME")
 
     if index_name not in index_list:
         pc.create_index(
@@ -23,15 +25,8 @@ def init_pinecone():
     else:
         print(f"Índice '{index_name}' ya existe.")
 
-    index = pc.Index(index_name)  
+    index = pc.Index(name=index_name)
     return index
-
-
-
-
-
-
-
 
 
 

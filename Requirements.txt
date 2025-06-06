@@ -20,4 +20,6 @@ qrcode
 streamlit
 pandas
 tabulate
+pinecone 
+dotenv
 
